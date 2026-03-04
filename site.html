@@ -1,0 +1,800 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Agimmy Group | Digital Ecosystems</title>
+    
+    <!-- Futuristic & Clean Fonts -->
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600&family=Space+Grotesk:wght@300;400;500;700&display=swap" rel="stylesheet">
+
+    <style>
+        :root {
+            /* Core Colors */
+            --bg-base: #030305;
+            --text-primary: #ffffff;
+            --text-secondary: #a0aab2;
+            --border-color: rgba(255, 255, 255, 0.08);
+            
+            /* Enhanced Vibrant Nebula Accents */
+            --neon-pink: #ff2a85;
+            --neon-blue: #0066ff;
+            --neon-purple: #9d4edd;
+            --neon-orange: #ff5e00;
+            --neon-cyan: #00f0ff;
+            --neon-lime: #b5e48c;
+
+            /* UI Elements - Ultra Glass */
+            --card-bg: rgba(15, 15, 22, 0.4);
+            --glass-blur: blur(40px);
+            --transition-smooth: 0.6s cubic-bezier(0.16, 1, 0.3, 1);
+        }
+
+        /* Reset & Base */
+        * { margin: 0; padding: 0; box-sizing: border-box; }
+        html { scroll-behavior: smooth; }
+        body {
+            background-color: var(--bg-base);
+            color: var(--text-primary);
+            font-family: 'Inter', sans-serif;
+            overflow-x: hidden;
+            line-height: 1.6;
+            position: relative;
+        }
+
+        /* Ambient Color Bleed Orbs */
+        .glow-container {
+            position: absolute; top: 0; left: 0; width: 100%; height: 100%;
+            z-index: -1; pointer-events: none; overflow: visible;
+        }
+        .glow {
+            position: absolute; border-radius: 50%; filter: blur(140px); opacity: 0.55; 
+            mix-blend-mode: screen; animation: drift 20s infinite alternate cubic-bezier(0.45, 0.05, 0.55, 0.95);
+        }
+        @keyframes drift {
+            0% { transform: translate(0, 0) scale(1); }
+            50% { transform: translate(4%, 8%) scale(1.15); }
+            100% { transform: translate(-4%, -4%) scale(0.9); }
+        }
+
+        /* Typography */
+        h1, h2, h3, h4, h5, .nav-links a, .btn, .tab-btn {
+            font-family: 'Space Grotesk', sans-serif; letter-spacing: -0.02em;
+        }
+        .gradient-text {
+            background: linear-gradient(135deg, #fff 0%, var(--neon-cyan) 25%, var(--neon-purple) 50%, var(--neon-pink) 100%);
+            -webkit-background-clip: text; -webkit-text-fill-color: transparent;
+        }
+        .subtitle {
+            color: var(--neon-cyan); text-transform: uppercase; letter-spacing: 0.2em;
+            font-size: 0.85rem; font-weight: 600; margin-bottom: 1rem; display: block;
+        }
+
+        /* --- DYNAMIC AGIMMY LOGO CSS --- */
+        .agimmy-logo {
+            display: flex; flex-direction: column; align-items: center; text-decoration: none;
+            gap: 6px; transition: transform 0.4s cubic-bezier(0.16, 1, 0.3, 1), filter 0.4s ease; padding: 5px;
+        }
+        .agimmy-logo:hover {
+            transform: scale(1.03); filter: drop-shadow(0 0 15px rgba(0, 240, 255, 0.3));
+        }
+        .logo-line {
+            height: 2px; width: 100%; opacity: 0.5;
+            background: linear-gradient(90deg, transparent 0%, var(--neon-cyan) 30%, var(--neon-pink) 70%, transparent 100%);
+            transition: opacity 0.4s ease, height 0.4s ease, box-shadow 0.4s ease;
+        }
+        .agimmy-logo:hover .logo-line { opacity: 1; height: 3px; box-shadow: 0 0 10px var(--neon-cyan); }
+        .logo-core { display: flex; align-items: center; gap: 15px; padding: 0 10px; }
+        .ag-mark {
+            width: 42px; height: 42px;
+            fill: rgba(255, 255, 255, 0.03); stroke: url(#ag-gradient); stroke-width: 2;
+            stroke-linejoin: round; backdrop-filter: blur(10px); transition: fill 0.4s ease;
+        }
+        .agimmy-logo:hover .ag-mark { fill: rgba(0, 240, 255, 0.1); }
+        .ag-text-stack { display: flex; flex-direction: column; justify-content: center; }
+        .ag-text-stack span {
+            font-family: 'Space Grotesk', sans-serif; letter-spacing: 0.35em; line-height: 1.2;
+            text-transform: uppercase; transition: color 0.4s ease;
+        }
+        .ag-top-text { font-weight: 600; font-size: 1.1rem; color: #ffffff; }
+        .ag-bot-text { font-weight: 300; font-size: 0.85rem; color: var(--text-secondary); }
+        .agimmy-logo:hover .ag-top-text { color: var(--neon-cyan); }
+        .agimmy-logo:hover .ag-bot-text { color: var(--text-primary); }
+        /* ------------------------------- */
+
+        /* Layout */
+        section { padding: 15vh 8vw; position: relative; z-index: 1; }
+        .section-header { margin-bottom: 4rem; text-align: center; max-width: 800px; margin-inline: auto; }
+        .section-title { font-size: clamp(2.5rem, 5vw, 4rem); margin-bottom: 1rem; line-height: 1.1; }
+        .section-desc { color: var(--text-secondary); font-size: 1.1rem; font-weight: 300; }
+
+        /* Navigation */
+        nav {
+            position: fixed; top: 0; width: 100%; padding: 1rem 8vw;
+            display: flex; justify-content: space-between; align-items: center;
+            z-index: 100; transition: var(--transition-smooth);
+        }
+        nav.scrolled {
+            background: rgba(3, 3, 5, 0.7); backdrop-filter: var(--glass-blur); -webkit-backdrop-filter: var(--glass-blur);
+            border-bottom: 1px solid var(--border-color); box-shadow: 0 10px 30px rgba(0,0,0,0.3); padding: 0.5rem 8vw;
+        }
+        .nav-links { display: flex; gap: 2.5rem; align-items: center; }
+        .nav-links a { color: var(--text-secondary); text-decoration: none; font-size: 0.85rem; font-weight: 500; transition: color 0.3s; text-transform: uppercase; letter-spacing: 0.05em; }
+        .nav-links a:hover { color: var(--text-primary); text-shadow: 0 0 10px rgba(255,255,255,0.5); }
+        .btn {
+            padding: 0.8rem 1.8rem; background: var(--text-primary); color: #000;
+            border-radius: 30px; text-decoration: none; font-weight: 600; font-size: 0.9rem;
+            transition: transform 0.3s, box-shadow 0.3s; cursor: pointer; border: none;
+        }
+        .btn:hover { transform: translateY(-2px); box-shadow: 0 10px 25px rgba(255, 255, 255, 0.25); }
+
+        /* Hero Section */
+        #home { min-height: 90vh; display: flex; align-items: center; padding-top: 15vh; padding-bottom: 5vh; }
+        .hero-container { display: grid; grid-template-columns: 1fr 1fr; gap: 4rem; align-items: center; position: relative; }
+        .hero-title { font-size: clamp(3.5rem, 6vw, 6.5rem); margin-bottom: 1.5rem; }
+        .hero-subtitle { font-size: clamp(1.1rem, 1.5vw, 1.25rem); color: var(--text-secondary); font-weight: 300; max-width: 90%; margin-bottom: 2.5rem; }
+        .hero-img { border-radius: 30px; overflow: hidden; box-shadow: 0 30px 60px rgba(0,0,0,0.6); aspect-ratio: 4/5; border: 1px solid var(--border-color); position: relative; }
+        .hero-img::after { content: ''; position: absolute; inset: 0; background: linear-gradient(45deg, rgba(0,240,255,0.1), rgba(255,42,133,0.1)); pointer-events: none; }
+        .hero-img img { width: 100%; height: 100%; object-fit: cover; transform: scale(1.05); transition: transform 2s ease; opacity: 0.9; }
+        .hero-img:hover img { transform: scale(1); opacity: 1; }
+
+        /* Sliding Data Ticker (Wheel Tab) */
+        .ticker-wrap {
+            width: 100%; background: rgba(10, 10, 15, 0.4); overflow: hidden; padding: 1.5rem 0;
+            display: flex; position: relative; z-index: 10; border-top: 1px solid var(--border-color);
+            border-bottom: 1px solid var(--border-color); backdrop-filter: blur(20px); -webkit-backdrop-filter: blur(20px);
+        }
+        .ticker { display: flex; white-space: nowrap; animation: ticker 35s linear infinite; }
+        .ticker-item {
+            padding: 0 3rem; font-family: 'Space Grotesk'; font-size: 0.9rem; letter-spacing: 0.15em;
+            color: rgba(255,255,255,0.8); text-transform: uppercase; display: flex; align-items: center;
+        }
+        @keyframes ticker { 0% { transform: translate3d(0, 0, 0); } 100% { transform: translate3d(-50%, 0, 0); } }
+
+        /* About / Mission Section */
+        .about-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 4rem; background: var(--card-bg); border: 1px solid var(--border-color); border-radius: 40px; padding: 5rem; backdrop-filter: var(--glass-blur); -webkit-backdrop-filter: var(--glass-blur); }
+        .about-text p { font-size: clamp(1.2rem, 2vw, 1.8rem); color: var(--text-secondary); font-weight: 300; line-height: 1.5; margin-bottom: 1.5rem; }
+        .about-text p span { color: var(--text-primary); font-weight: 500; }
+        .about-visual { border-radius: 20px; overflow: hidden; opacity: 0.9; border: 1px solid rgba(255,255,255,0.1); }
+        .about-visual img { width: 100%; height: 100%; object-fit: cover; }
+
+        /* Services Overview Grid */
+        .services-grid { display: grid; grid-template-columns: repeat(auto-fit, minmax(250px, 1fr)); gap: 2rem; margin-bottom: 6rem;}
+        .service-card {
+            background: var(--card-bg); border: 1px solid var(--border-color); border-radius: 24px; padding: 2.5rem;
+            backdrop-filter: var(--glass-blur); transition: var(--transition-smooth); display: flex; flex-direction: column; position: relative; overflow: hidden;
+        }
+        .service-card::before {
+            content: ''; position: absolute; top: 0; left: 0; width: 100%; height: 100%;
+            background: radial-gradient(circle at top right, var(--hover-color, rgba(255,255,255,0.05)), transparent 50%);
+            opacity: 0; transition: opacity 0.4s ease;
+        }
+        .service-card:hover { transform: translateY(-10px); border-color: rgba(255,255,255,0.2); box-shadow: 0 20px 40px rgba(0,0,0,0.5); }
+        .service-card:hover::before { opacity: 1; }
+        .service-icon { font-size: 2.5rem; margin-bottom: 1.5rem; position: relative; z-index: 2; text-shadow: 0 0 20px currentColor; }
+        .service-card h3 { font-size: 1.5rem; margin-bottom: 1rem; position: relative; z-index: 2; }
+        .service-card p { color: var(--text-secondary); font-size: 0.95rem; line-height: 1.6; position: relative; z-index: 2; }
+
+        /* Packages (Manifesto) Tabs */
+        .packages-container { background: rgba(10, 10, 15, 0.5); border: 1px solid var(--border-color); border-radius: 30px; backdrop-filter: var(--glass-blur); padding: 4rem; box-shadow: 0 30px 60px rgba(0,0,0,0.4); }
+        .tab-controls { display: flex; gap: 1rem; border-bottom: 1px solid var(--border-color); padding-bottom: 1.5rem; margin-bottom: 3rem; overflow-x: auto; white-space: nowrap; scrollbar-width: none; }
+        .tab-controls::-webkit-scrollbar { display: none; }
+        .tab-btn {
+            background: transparent; color: var(--text-secondary); border: 1px solid transparent;
+            padding: 0.8rem 1.5rem; border-radius: 30px; font-size: 0.9rem; cursor: pointer; transition: all 0.3s ease; text-transform: uppercase; letter-spacing: 0.1em; font-weight: 600;
+        }
+        .tab-btn:hover { color: var(--text-primary); background: rgba(255,255,255,0.05); }
+        
+        .tab-btn[data-tab="dev"].active { background: rgba(0, 240, 255, 0.1); color: var(--neon-cyan); border-color: var(--neon-cyan); box-shadow: 0 0 20px rgba(0, 240, 255, 0.2); }
+        .tab-btn[data-tab="creative"].active { background: rgba(255, 42, 133, 0.1); color: var(--neon-pink); border-color: var(--neon-pink); box-shadow: 0 0 20px rgba(255, 42, 133, 0.2); }
+        .tab-btn[data-tab="strategy"].active { background: rgba(255, 94, 0, 0.1); color: var(--neon-orange); border-color: var(--neon-orange); box-shadow: 0 0 20px rgba(255, 94, 0, 0.2); }
+        .tab-btn[data-tab="engagement"].active { background: rgba(157, 78, 221, 0.1); color: #cda4ff; border-color: var(--neon-purple); box-shadow: 0 0 20px rgba(157, 78, 221, 0.2); }
+
+        .tab-content { display: none; animation: fadeIn 0.5s ease forwards; }
+        .tab-content.active { display: block; }
+        .pillar-desc { color: var(--text-primary); font-family: 'Space Grotesk'; font-size: 1.2rem; margin-bottom: 2.5rem; border-left: 4px solid currentColor; padding-left: 1rem; }
+
+        .package-grid { display: grid; grid-template-columns: repeat(auto-fit, minmax(300px, 1fr)); gap: 2rem; }
+        .pkg-card {
+            background: rgba(0,0,0,0.4); border: 1px solid var(--border-color); border-radius: 20px; padding: 2.5rem; display: flex; flex-direction: column; transition: transform 0.3s, border-color 0.3s;
+        }
+        .pkg-card:hover { transform: translateY(-5px); }
+        .pkg-card h4 { font-size: 1.3rem; margin-bottom: 0.5rem; color: #fff; }
+        .pkg-target { font-size: 0.85rem; font-family: 'Space Grotesk'; margin-bottom: 1.5rem; letter-spacing: 0.05em; text-transform: uppercase; }
+        .pkg-card ul { list-style: none; margin-bottom: 2rem; flex-grow: 1; }
+        .pkg-card ul li { color: var(--text-secondary); font-size: 0.95rem; margin-bottom: 0.8rem; display: flex; align-items: flex-start; gap: 0.8rem; }
+        .pkg-card ul li::before { content: '→'; font-weight: bold; opacity: 0.7; }
+        .pkg-footer { margin-top: auto; padding-top: 1.5rem; border-top: 1px dashed var(--border-color); font-size: 0.85rem; color: var(--text-secondary); font-family: 'Space Grotesk'; }
+        
+        #tab-dev .pkg-card:hover { border-color: var(--neon-cyan); }
+        #tab-dev .pkg-target, #tab-dev .pkg-card ul li::before { color: var(--neon-cyan); }
+        #tab-creative .pkg-card:hover { border-color: var(--neon-pink); }
+        #tab-creative .pkg-target, #tab-creative .pkg-card ul li::before { color: var(--neon-pink); }
+        #tab-strategy .pkg-card:hover { border-color: var(--neon-orange); }
+        #tab-strategy .pkg-target, #tab-strategy .pkg-card ul li::before { color: var(--neon-orange); }
+        #tab-engagement .pkg-card:hover { border-color: var(--neon-purple); }
+        #tab-engagement .pkg-target, #tab-engagement .pkg-card ul li::before { color: #cda4ff; }
+
+        @keyframes fadeIn { from { opacity: 0; transform: translateY(15px); } to { opacity: 1; transform: translateY(0); } }
+
+        /* Team Section */
+        .team-grid { display: grid; grid-template-columns: repeat(auto-fit, minmax(220px, 1fr)); gap: 2rem; }
+        .team-card { text-align: center; }
+        .team-img { width: 100%; aspect-ratio: 1/1; border-radius: 24px; overflow: hidden; margin-bottom: 1.5rem; border: 1px solid var(--border-color); position: relative; }
+        .team-img::after { content:''; position: absolute; inset: 0; background: linear-gradient(to top, rgba(0,0,0,0.5), transparent); pointer-events: none; }
+        .team-img img { width: 100%; height: 100%; object-fit: cover; filter: grayscale(100%) contrast(1.2); transition: var(--transition-smooth); opacity: 0.8; }
+        .team-card:hover .team-img img { filter: grayscale(0%) contrast(1); transform: scale(1.08); opacity: 1; }
+        .team-card h3 { font-size: 1.3rem; margin-bottom: 0.2rem; }
+        .team-card p { color: var(--neon-cyan); font-size: 0.85rem; font-family: 'Space Grotesk'; text-transform: uppercase; letter-spacing: 0.05em;}
+
+        /* Contact Section */
+        .contact-container { display: grid; grid-template-columns: 1fr 1fr; gap: 4rem; background: var(--card-bg); padding: 5rem; border-radius: 40px; border: 1px solid var(--border-color); backdrop-filter: var(--glass-blur); box-shadow: 0 20px 50px rgba(0,0,0,0.3); }
+        .contact-info h2 { font-size: 3rem; margin-bottom: 1.5rem; }
+        .contact-info p { color: var(--text-secondary); margin-bottom: 2rem; font-size: 1.1rem; }
+        .form-group { margin-bottom: 1.5rem; }
+        input, textarea {
+            width: 100%; padding: 1.2rem; background: rgba(0,0,0,0.4); border: 1px solid var(--border-color);
+            border-radius: 12px; color: #fff; font-family: 'Inter', sans-serif; transition: var(--transition-smooth);
+        }
+        input:focus, textarea:focus { outline: none; border-color: var(--neon-cyan); background: rgba(0,0,0,0.6); box-shadow: 0 0 15px rgba(0, 240, 255, 0.1); }
+        textarea { resize: vertical; min-height: 120px; }
+        .submit-btn {
+            width: 100%; padding: 1.2rem; background: #fff; color: #000; border: none; border-radius: 12px;
+            font-family: 'Space Grotesk', sans-serif; font-weight: 700; font-size: 1rem; cursor: pointer; transition: var(--transition-smooth); text-transform: uppercase; letter-spacing: 0.1em;
+        }
+        .submit-btn:hover { background: var(--neon-cyan); transform: translateY(-2px); box-shadow: 0 10px 25px rgba(0, 240, 255, 0.3); }
+
+        /* Footer */
+        footer { padding: 4rem 8vw 2rem; background: transparent; border: none; position: relative; z-index: 1;}
+        .footer-grid { display: grid; grid-template-columns: 2fr 1fr 1fr 1fr; gap: 4rem; margin-bottom: 4rem; }
+        .footer-col h4 { color: #fff; margin-bottom: 1.5rem; font-size: 1.1rem; }
+        .footer-col a { display: block; color: var(--text-secondary); text-decoration: none; margin-bottom: 0.8rem; font-size: 0.9rem; transition: color 0.3s; }
+        .footer-col a:hover { color: var(--neon-cyan); }
+        .footer-bottom { text-align: center; color: var(--text-secondary); font-size: 0.8rem; border-top: 1px solid var(--border-color); padding-top: 2rem; display: flex; justify-content: space-between; align-items: center; }
+
+        /* 2D Scroll Animation */
+        .reveal { opacity: 0; transform: translateY(40px); transition: all 1s cubic-bezier(0.16, 1, 0.3, 1); }
+        .reveal.active { opacity: 1; transform: translateY(0); }
+        .delay-1 { transition-delay: 0.1s; } .delay-2 { transition-delay: 0.2s; }
+        .delay-3 { transition-delay: 0.3s; } .delay-4 { transition-delay: 0.4s; }
+
+        /* Responsive */
+        @media (max-width: 1024px) {
+            .hero-container, .about-grid, .contact-container { grid-template-columns: 1fr; gap: 3rem; }
+            .footer-grid { grid-template-columns: 1fr 1fr; }
+            .nav-links { display: none; }
+            section { padding: 10vh 5vw; }
+            .about-grid, .contact-container, .packages-container { padding: 2.5rem; }
+            .glow { filter: blur(100px); }
+        }
+        @media (max-width: 600px) {
+            .footer-grid { grid-template-columns: 1fr; text-align: center; }
+            .footer-bottom { flex-direction: column; gap: 1rem; }
+            .ticker-item { font-size: 0.75rem; padding: 0 2rem; }
+        }
+    </style>
+</head>
+<body>
+
+    <!-- SVG Gradients Definition -->
+    <svg width="0" height="0" style="position:absolute;">
+        <defs>
+            <linearGradient id="ag-gradient" x1="0%" y1="0%" x2="100%" y2="100%">
+                <stop offset="0%" stop-color="#00f0ff" />
+                <stop offset="50%" stop-color="#9d4edd" />
+                <stop offset="100%" stop-color="#ff2a85" />
+            </linearGradient>
+        </defs>
+    </svg>
+
+    <!-- Navigation -->
+    <nav id="navbar">
+        <!-- AGIMMY GROUP DYNAMIC LOGO -->
+        <a href="#home" class="agimmy-logo">
+            <div class="logo-line"></div>
+            <div class="logo-core">
+                <svg class="ag-mark" viewBox="0 0 100 100" xmlns="http://www.w3.org/2000/svg">
+                    <!-- Abstract Blocky 'A' -->
+                    <path d="M 10 90 V 10 H 50 V 45 H 30 V 60 H 50 V 90 H 10 Z" />
+                    <!-- Inner cutout of 'A' -->
+                    <rect x="25" y="25" width="10" height="10" fill="#030305" stroke="none" />
+                    <!-- Abstract Blocky 'G' -->
+                    <path d="M 90 10 H 55 V 90 H 90 V 50 H 70 V 65 H 75 V 75 H 70 V 90" />
+                </svg>
+                <div class="ag-text-stack">
+                    <span class="ag-top-text">Agimmy</span>
+                    <span class="ag-bot-text">Group</span>
+                </div>
+            </div>
+            <div class="logo-line"></div>
+        </a>
+        
+        <div class="nav-links">
+            <a href="#about">Mission</a>
+            <a href="#services">Portfolio</a>
+            <a href="#packages">Blueprints</a>
+            <a href="#team">Crew</a>
+            <a href="#contact" class="btn" style="margin-left: 1rem;">Establish Uplink</a>
+        </div>
+    </nav>
+
+    <!-- Hero Section -->
+    <section id="home">
+        <!-- Vibrant Multi-Color Orbs -->
+        <div class="glow-container">
+            <div class="glow" style="width: 55vw; height: 55vw; background: var(--neon-blue); top: -15%; left: -10%;"></div>
+            <div class="glow" style="width: 45vw; height: 45vw; background: var(--neon-purple); top: 30%; right: -5%;"></div>
+            <div class="glow" style="width: 35vw; height: 35vw; background: var(--neon-cyan); bottom: -10%; left: 20%; opacity: 0.4;"></div>
+        </div>
+
+        <div class="hero-container">
+            <div class="reveal">
+                <span class="subtitle">System Initialization</span>
+                <h1 class="hero-title">Architecting <br><span class="gradient-text">The Unknown.</span></h1>
+                <p class="hero-subtitle">We empower businesses to grow and lead in the modern economy by delivering integrated technology, creative innovation, and strategic insight.</p>
+                <div style="display: flex; gap: 1rem;">
+                    <a href="#packages" class="btn" style="background: rgba(255,255,255,0.05); color: #fff; border: 1px solid var(--border-color); backdrop-filter: blur(10px);">View Blueprints</a>
+                    <a href="#services" class="btn" style="background: var(--text-primary); color: #000;">Explore Modules</a>
+                </div>
+            </div>
+            <div class="hero-img reveal delay-2">
+                <img src="https://images.unsplash.com/photo-1618005182384-a83a8bd57fbe?q=80&w=1200&auto=format&fit=crop" alt="Abstract Architecture">
+            </div>
+        </div>
+    </section>
+
+    <!-- Sliding Data Ticker (Wheel Tab) -->
+    <div class="ticker-wrap">
+        <div class="ticker">
+            <div class="ticker-item"><span style="color: var(--neon-cyan); margin-right: 15px;">//</span> DEVELOPMENT & TECH</div>
+            <div class="ticker-item"><span style="color: var(--neon-pink); margin-right: 15px;">//</span> CREATIVE & CONTENT</div>
+            <div class="ticker-item"><span style="color: var(--neon-orange); margin-right: 15px;">//</span> STRATEGY & GROWTH</div>
+            <div class="ticker-item"><span style="color: var(--neon-purple); margin-right: 15px;">//</span> ENGAGEMENT</div>
+            <div class="ticker-item"><span style="color: var(--neon-lime); margin-right: 15px;">//</span> INFRASTRUCTURE PACKAGES</div>
+            <div class="ticker-item"><span style="color: var(--neon-cyan); margin-right: 15px;">//</span> REVENUE ARCHITECTURE</div>
+            <!-- Duplicate for seamless loop -->
+            <div class="ticker-item"><span style="color: var(--neon-cyan); margin-right: 15px;">//</span> DEVELOPMENT & TECH</div>
+            <div class="ticker-item"><span style="color: var(--neon-pink); margin-right: 15px;">//</span> CREATIVE & CONTENT</div>
+            <div class="ticker-item"><span style="color: var(--neon-orange); margin-right: 15px;">//</span> STRATEGY & GROWTH</div>
+            <div class="ticker-item"><span style="color: var(--neon-purple); margin-right: 15px;">//</span> ENGAGEMENT</div>
+            <div class="ticker-item"><span style="color: var(--neon-lime); margin-right: 15px;">//</span> INFRASTRUCTURE PACKAGES</div>
+            <div class="ticker-item"><span style="color: var(--neon-cyan); margin-right: 15px;">//</span> REVENUE ARCHITECTURE</div>
+        </div>
+    </div>
+
+    <!-- Mission Statement Section -->
+    <section id="about">
+        <div class="glow-container">
+            <div class="glow" style="width: 60vw; height: 60vw; background: var(--neon-pink); top: 10%; left: -20%;"></div>
+            <div class="glow" style="width: 40vw; height: 40vw; background: var(--neon-orange); bottom: -10%; right: 10%; opacity: 0.3;"></div>
+        </div>
+
+        <div class="about-grid reveal">
+            <div class="about-visual">
+                <img src="https://images.unsplash.com/photo-1581091226825-a6a2a5aee158?q=80&w=1000&auto=format&fit=crop" alt="Laboratory Setup">
+            </div>
+            <div style="display: flex; flex-direction: column; justify-content: center;">
+                <span class="subtitle" style="color: var(--neon-pink);">Core Directive</span>
+                <h2 style="font-size: 2.5rem; margin-bottom: 2rem;">Mission Statement</h2>
+                <div class="about-text">
+                    <p>Our mission is to <span>empower businesses to grow and lead</span> in the modern economy.</p>
+                    <p>We achieve this by delivering integrated technology, creative innovation, rigorous strategic insight, and meaningful public engagement.</p>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Services Overview Section -->
+    <section id="services">
+        <div class="glow-container">
+            <div class="glow" style="width: 60vw; height: 60vw; background: var(--neon-orange); top: 0%; right: -20%;"></div>
+        </div>
+
+        <div class="section-header reveal">
+            <span class="subtitle" style="color: var(--neon-orange);">Pillars</span>
+            <h2 class="section-title">Service Offering <span class="gradient-text">Portfolio</span></h2>
+            <p class="section-desc">A comprehensive suite of business and creative services.</p>
+        </div>
+
+        <div class="services-grid">
+            <div class="service-card reveal delay-1" style="--hover-color: rgba(0,240,255,0.15);">
+                <div class="service-icon" style="color: var(--neon-cyan);">⌘</div>
+                <h3>Development & Tech</h3>
+                <p>Web Development, App Development, and complex E-commerce Systems infrastructure.</p>
+            </div>
+            <div class="service-card reveal delay-2" style="--hover-color: rgba(255,42,133,0.15);">
+                <div class="service-icon" style="color: var(--neon-pink);">✧</div>
+                <h3>Creative & Content</h3>
+                <p>Design, Video & Animation, and multi-channel Content Development.</p>
+            </div>
+            <div class="service-card reveal delay-3" style="--hover-color: rgba(255,94,0,0.15);">
+                <div class="service-icon" style="color: var(--neon-orange);">◱</div>
+                <h3>Strategy & Growth</h3>
+                <p>Strategy & Data, Business Development, and high-conversion Digital/Social Marketing.</p>
+            </div>
+            <div class="service-card reveal delay-4" style="--hover-color: rgba(157,78,221,0.15);">
+                <div class="service-icon" style="color: var(--neon-purple);">⚲</div>
+                <h3>Engagement</h3>
+                <p>Public Relations, immersive Activations, and Experiential Events.</p>
+            </div>
+        </div>
+
+        <!-- THE PACKAGES MANIFESTO -->
+        <div id="packages" class="packages-container reveal delay-2">
+            <div style="text-align: center; margin-bottom: 3rem;">
+                <h2 style="font-size: 2.5rem;">System Packages</h2>
+                <p style="color: var(--text-secondary);">Detailed architectural blueprints for client deployment.</p>
+            </div>
+
+            <div class="tab-controls">
+                <button class="tab-btn active" data-tab="dev">1. Dev & Tech</button>
+                <button class="tab-btn" data-tab="creative">2. Creative & Content</button>
+                <button class="tab-btn" data-tab="strategy">3. Strategy & Growth</button>
+                <button class="tab-btn" data-tab="engagement">4. Engagement</button>
+            </div>
+
+            <!-- Tab 1: Dev & Tech -->
+            <div class="tab-content active" id="tab-dev">
+                <p class="pillar-desc" style="color: var(--neon-cyan);">These are infrastructure packages.</p>
+                <div class="package-grid">
+                    <div class="pkg-card">
+                        <h4>A. Web Foundation Package</h4>
+                        <div class="pkg-target">For structured digital presence</div>
+                        <ul>
+                            <li>Custom website (5–8 pages)</li>
+                            <li>CMS integration</li>
+                            <li>Hosting configuration</li>
+                            <li>Technical SEO structure</li>
+                            <li>Basic analytics setup</li>
+                            <li>Security configuration</li>
+                        </ul>
+                        <div class="pkg-footer">
+                            EXECUTION & SCOPE ALIGNMENT:
+                            <span style="color: var(--neon-cyan); display: block; margin-top: 0.3rem;">Freeway & Agimmy</span>
+                        </div>
+                    </div>
+                    <div class="pkg-card">
+                        <h4>B. Commerce Systems Package</h4>
+                        <div class="pkg-target">For transactional businesses</div>
+                        <ul>
+                            <li>E-commerce platform development</li>
+                            <li>Payment gateway integration</li>
+                            <li>Shipping system integration</li>
+                            <li>Inventory & order automation</li>
+                            <li>Email confirmation flows</li>
+                            <li>Customer portal setup</li>
+                        </ul>
+                        <div class="pkg-footer">NOTE: Core differentiator. This is where your operational focus becomes visible.</div>
+                    </div>
+                    <div class="pkg-card">
+                        <h4>C. App & Systems Integration</h4>
+                        <div class="pkg-target">For scaling businesses</div>
+                        <ul>
+                            <li>Custom mobile app development</li>
+                            <li>API integrations</li>
+                            <li>CRM & ERP integration</li>
+                            <li>Automation workflows</li>
+                            <li>Data dashboards</li>
+                        </ul>
+                        <div class="pkg-footer" style="color: var(--neon-cyan);">HIGH-COMPLEXITY INFRASTRUCTURE</div>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Tab 2: Creative & Content -->
+            <div class="tab-content" id="tab-creative">
+                <p class="pillar-desc" style="color: var(--neon-pink);">These packages shape perception and storytelling.</p>
+                <div class="package-grid">
+                    <div class="pkg-card">
+                        <h4>A. Brand Identity Package</h4>
+                        <div class="pkg-target">For positioning clarity</div>
+                        <ul>
+                            <li>Logo development</li>
+                            <li>Brand guidelines</li>
+                            <li>Visual identity system</li>
+                            <li>Typography + color architecture</li>
+                            <li>Brand messaging framework</li>
+                        </ul>
+                    </div>
+                    <div class="pkg-card">
+                        <h4>B. Content Engine Package</h4>
+                        <div class="pkg-target">For consistent digital presence</div>
+                        <ul>
+                            <li>Monthly content calendar</li>
+                            <li>Graphic design assets</li>
+                            <li>Social media creatives</li>
+                            <li>Copywriting</li>
+                            <li>Blog content development</li>
+                        </ul>
+                    </div>
+                    <div class="pkg-card">
+                        <h4>C. Visual Production Package</h4>
+                        <div class="pkg-target">For high-impact storytelling</div>
+                        <ul>
+                            <li>Video production</li>
+                            <li>Animation & motion graphics</li>
+                            <li>Product launch videos</li>
+                            <li>Campaign videos</li>
+                            <li>Event highlight reels</li>
+                        </ul>
+                        <div class="pkg-footer" style="color: var(--neon-pink);">PERCEPTION AMPLIFICATION</div>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Tab 3: Strategy & Growth -->
+            <div class="tab-content" id="tab-strategy">
+                <p class="pillar-desc" style="color: var(--neon-orange);">This pillar drives measurable business outcomes.</p>
+                <div class="package-grid">
+                    <div class="pkg-card">
+                        <h4>A. Growth Strategy Package</h4>
+                        <div class="pkg-target">For structured expansion</div>
+                        <ul>
+                            <li>Market analysis</li>
+                            <li>Competitor research</li>
+                            <li>Customer journey mapping</li>
+                            <li>Brand positioning strategy</li>
+                            <li>Revenue model mapping</li>
+                        </ul>
+                    </div>
+                    <div class="pkg-card">
+                        <h4>B. Digital Marketing Package</h4>
+                        <div class="pkg-target">For traffic and lead generation</div>
+                        <ul>
+                            <li>Paid ads setup & management</li>
+                            <li>Social media management</li>
+                            <li>SEO strategy</li>
+                            <li>Email marketing automation</li>
+                            <li>Conversion optimization</li>
+                        </ul>
+                    </div>
+                    <div class="pkg-card">
+                        <h4>C. Biz Dev & Data Package</h4>
+                        <div class="pkg-target">For performance intelligence</div>
+                        <ul>
+                            <li>KPI framework setup</li>
+                            <li>Data dashboard implementation</li>
+                            <li>Sales pipeline structuring</li>
+                            <li>CRM optimization</li>
+                            <li>Quarterly growth review sessions</li>
+                        </ul>
+                        <div class="pkg-footer" style="color: var(--neon-orange);">REVENUE ARCHITECTURE</div>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Tab 4: Engagement -->
+            <div class="tab-content" id="tab-engagement">
+                <p class="pillar-desc" style="color: #cda4ff;">This pillar builds influence and physical presence.</p>
+                <div class="package-grid">
+                    <div class="pkg-card">
+                        <h4>A. PR & Media Package</h4>
+                        <div class="pkg-target">For public narrative control</div>
+                        <ul>
+                            <li>Press release development</li>
+                            <li>Media outreach</li>
+                            <li>Influencer strategy</li>
+                            <li>Interview coordination</li>
+                            <li>Reputation management planning</li>
+                        </ul>
+                    </div>
+                    <div class="pkg-card">
+                        <h4>B. Brand Activation Package</h4>
+                        <div class="pkg-target">For immersive audience contact</div>
+                        <ul>
+                            <li>Campaign concept development</li>
+                            <li>Experiential marketing design</li>
+                            <li>Influencer collaborations</li>
+                            <li>Launch activations</li>
+                        </ul>
+                    </div>
+                    <div class="pkg-card">
+                        <h4>C. Event & Experiential Package</h4>
+                        <div class="pkg-target">For real-world community building</div>
+                        <ul>
+                            <li>Event strategy & design</li>
+                            <li>Event branding</li>
+                            <li>On-site production coordination</li>
+                            <li>Post-event media coverage</li>
+                            <li>Event highlight content</li>
+                        </ul>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Team Section -->
+    <section id="team">
+        <div class="glow-container">
+            <div class="glow" style="width: 70vw; height: 70vw; background: var(--neon-cyan); top: 30%; left: -25%; opacity: 0.25;"></div>
+        </div>
+
+        <div class="section-header reveal">
+            <span class="subtitle" style="color: var(--neon-lime);">Personnel</span>
+            <h2 class="section-title">Flight <span class="gradient-text">Crew</span></h2>
+            <p class="section-desc">The architects and operators piloting the execution.</p>
+        </div>
+
+        <div class="team-grid">
+            <div class="team-card reveal delay-1">
+                <div class="team-img">
+                    <img src="https://images.unsplash.com/photo-1507003211169-0a1dd7228f2d?q=80&w=500&auto=format&fit=crop" alt="Freeway">
+                </div>
+                <h3>Freeway</h3>
+                <p>Lead Execution / Architecture</p>
+            </div>
+            <div class="team-card reveal delay-2">
+                <div class="team-img">
+                    <img src="https://images.unsplash.com/photo-1534528741775-53994a69daeb?q=80&w=500&auto=format&fit=crop" alt="Agimmy">
+                </div>
+                <h3>Agimmy</h3>
+                <p>Client Management / Scope</p>
+            </div>
+            <div class="team-card reveal delay-3">
+                <div class="team-img">
+                    <img src="https://images.unsplash.com/photo-1506794778202-cad84cf45f1d?q=80&w=500&auto=format&fit=crop" alt="Team Member Placeholder">
+                </div>
+                <h3>Marcus W.</h3>
+                <p>Creative Director</p>
+            </div>
+        </div>
+    </section>
+
+    <!-- Contact Section -->
+    <section id="contact">
+        <div class="glow-container">
+            <div class="glow" style="width: 60vw; height: 60vw; background: var(--neon-purple); top: 10%; right: -20%;"></div>
+            <div class="glow" style="width: 40vw; height: 40vw; background: var(--neon-blue); bottom: 0; left: -10%;"></div>
+        </div>
+
+        <div class="contact-container reveal">
+            <div class="contact-info">
+                <span class="subtitle" style="color: var(--neon-purple);">Secure Channel</span>
+                <h2>Establish <br><span class="gradient-text">Uplink.</span></h2>
+                <p>Ready to deploy one of our architectural packages? Transmit your coordinates and project parameters to our command center.</p>
+                
+                <div style="margin-top: 3rem;">
+                    <p style="color: #fff; font-weight: 500; font-family: 'Space Grotesk', sans-serif;">Command Center ZA</p>
+                    <p>Johannesburg, South Africa<br>Sector ZA - Global Operations</p>
+                </div>
+                <div style="margin-top: 2rem;">
+                    <p style="color: #fff; font-weight: 500; font-family: 'Space Grotesk', sans-serif;">Frequency</p>
+                    <p>deploy@agimmygroup.co.za<br>+27 (0) 10 555 0199</p>
+                </div>
+            </div>
+            
+            <form class="contact-form" onsubmit="event.preventDefault(); alert('Transmission Sent Successfully.');">
+                <div class="form-group">
+                    <input type="text" placeholder="Pilot Name // Designation" required>
+                </div>
+                <div class="form-group">
+                    <input type="email" placeholder="Return Frequency // Email" required>
+                </div>
+                <div class="form-group">
+                    <input type="text" placeholder="Target Package (e.g. Commerce Systems)">
+                </div>
+                <div class="form-group">
+                    <textarea placeholder="Transmission Payload // Project Details" required></textarea>
+                </div>
+                <button type="submit" class="submit-btn">Transmit Data</button>
+            </form>
+        </div>
+    </section>
+
+    <!-- Footer -->
+    <footer>
+        <div class="footer-grid">
+            <div class="footer-col" style="display: flex; flex-direction: column; align-items: flex-start;">
+                <!-- AGIMMY GROUP FOOTER LOGO -->
+                <a href="#home" class="agimmy-logo" style="margin-bottom: 1.5rem;">
+                    <div class="logo-line"></div>
+                    <div class="logo-core">
+                        <svg class="ag-mark" viewBox="0 0 100 100" xmlns="http://www.w3.org/2000/svg">
+                            <path d="M 10 90 V 10 H 50 V 45 H 30 V 60 H 50 V 90 H 10 Z" />
+                            <rect x="25" y="25" width="10" height="10" fill="#030305" stroke="none" />
+                            <path d="M 90 10 H 55 V 90 H 90 V 50 H 70 V 65 H 75 V 75 H 70 V 90" />
+                        </svg>
+                        <div class="ag-text-stack">
+                            <span class="ag-top-text">Agimmy</span>
+                            <span class="ag-bot-text">Group</span>
+                        </div>
+                    </div>
+                    <div class="logo-line"></div>
+                </a>
+                
+                <p style="color: var(--text-secondary); font-size: 0.9rem; max-width: 250px; padding-left: 5px;">Architecting the unknown. Precision engineered ecosystems for modern businesses.</p>
+            </div>
+            <div class="footer-col">
+                <h4 style="color: var(--neon-cyan);">Manifesto</h4>
+                <a href="#about">Mission Statement</a>
+                <a href="#packages">Infrastructure Packages</a>
+                <a href="#packages">Perception & Storytelling</a>
+                <a href="#packages">Revenue Architecture</a>
+            </div>
+            <div class="footer-col">
+                <h4 style="color: var(--neon-pink);">Frequencies</h4>
+                <a href="#">LinkedIn Network</a>
+                <a href="#">X / Twitter feed</a>
+                <a href="#">Instagram Visuals</a>
+                <a href="#">GitHub Repos</a>
+            </div>
+            <div class="footer-col">
+                <h4 style="color: var(--neon-orange);">Legal Parameters</h4>
+                <a href="#">Privacy Protocol</a>
+                <a href="#">Terms of Engagement</a>
+            </div>
+        </div>
+        <div class="footer-bottom">
+            <p>&copy; 2026 AGIMMY GROUP. All systems operational.</p>
+            <p>DESIGNED IN JOHANNESBURG, ZA</p>
+        </div>
+    </footer>
+
+    <!-- Interactive Scripts -->
+    <script>
+        document.addEventListener('DOMContentLoaded', () => {
+            
+            // 1. Scroll Reveal Animation via Intersection Observer
+            const revealElements = document.querySelectorAll('.reveal');
+            const revealObserver = new IntersectionObserver((entries) => {
+                entries.forEach(entry => {
+                    if (entry.isIntersecting) {
+                        entry.target.classList.add('active');
+                    }
+                });
+            }, { root: null, threshold: 0.1, rootMargin: "0px 0px -50px 0px" });
+
+            revealElements.forEach(el => revealObserver.observe(el));
+
+            // 2. Vibrant Tab Switching Logic for Packages
+            const tabBtns = document.querySelectorAll('.tab-btn');
+            const tabContents = document.querySelectorAll('.tab-content');
+
+            tabBtns.forEach(btn => {
+                btn.addEventListener('click', () => {
+                    tabBtns.forEach(b => b.classList.remove('active'));
+                    tabContents.forEach(c => c.classList.remove('active'));
+                    
+                    btn.classList.add('active');
+                    const targetId = `tab-${btn.getAttribute('data-tab')}`;
+                    document.getElementById(targetId).classList.add('active');
+                });
+            });
+
+            // 3. Navbar Glass Effect on Scroll
+            const navbar = document.getElementById('navbar');
+            window.addEventListener('scroll', () => {
+                if (window.scrollY > 50) {
+                    navbar.classList.add('scrolled');
+                } else {
+                    navbar.classList.remove('scrolled');
+                }
+            });
+
+            // 4. Smooth Anchor Scrolling 
+            document.querySelectorAll('a[href^="#"]').forEach(anchor => {
+                anchor.addEventListener('click', function (e) {
+                    e.preventDefault();
+                    const targetId = this.getAttribute('href');
+                    if(targetId === '#') return;
+                    
+                    const targetElement = document.querySelector(targetId);
+                    if(targetElement) {
+                        const headerOffset = 90; // Adjust for slightly taller navbar
+                        const elementPosition = targetElement.getBoundingClientRect().top;
+                        const offsetPosition = elementPosition + window.pageYOffset - headerOffset;
+  
+                        window.scrollTo({
+                            top: offsetPosition,
+                            behavior: "smooth"
+                        });
+                    }
+                });
+            });
+        });
+    </script>
+</body>
+</html>
